@@ -2,27 +2,27 @@ import pytest
 from faker import Faker
 
 from app.domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
-from app.domain.values.email import EmailStr
+from app.domain.values.email import Email
 
 faker = Faker()
 
-def test_create_email_successful():
+def test_create_email_success():
     email_str = faker.email()
-    email = EmailStr(email_str)
+    email = Email(email_str)
 
     assert email.as_generic_type() == email_str
 
-def test_create_email_len_failed():
+def test_create_email_len_fail():
     with pytest.raises(LenEmailException):
         email_str = 'a'*50+faker.email()
-        email = EmailStr(email_str)
+        email = Email(email_str)
 
-def test_create_email_empty_failed():
+def test_create_email_empty_fail():
     with pytest.raises(EmptyEmailException):
         email_str = ''
-        email = EmailStr(email_str)
+        email = Email(email_str)
 
-def test_create_strange_email_failed():
+def test_create_strange_email_fail():
     with pytest.raises(ErrorEmailException):
         email_str = faker.name_male()
-        email = EmailStr(email_str)
+        email = Email(email_str)

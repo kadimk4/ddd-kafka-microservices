@@ -6,7 +6,7 @@ from app.domain.values.base import BaseValueObject
 pattern = r"^[-\w\.]+@([-\w]+\.)+[-\w]{2,4}$"
 
 @dataclass(frozen=True)
-class EmailStr(BaseValueObject):
+class Email(BaseValueObject):
     value: str
 
     def validate(self):

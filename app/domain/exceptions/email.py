@@ -15,7 +15,7 @@ class ErrorEmailException(ApplicationException):
 
     @property
     def message(self):
-        return "Your email must contain '@': {}...".format(email)
+        return "Your email must contain '@': {}...".format(self.email)
     
 @dataclass(eq=False)
 class LenEmailException(ApplicationException):
@@ -23,4 +23,4 @@ class LenEmailException(ApplicationException):
 
     @property
     def message(self):
-        return 'Your email is too long/short: {}...'.format(email)
+        return 'Your email is too long/short: {}...'.format(self.email)

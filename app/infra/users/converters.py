@@ -1,10 +1,16 @@
 from bson import ObjectId
 from app.domain.entities.base import BaseEntity
 from app.domain.entities.user import User
-from app.domain.values.email import EmailStr
+from app.domain.values.email import Email
+
 
 def from_document(document: dict) -> User:
-    return User(document.__dict__)
+    return User(
+            username=document['username'],
+            email=Email(document['email']),
+            oid=document['_id']
+        )
+
 
 def to_document(user: User) -> dict:
     return {
