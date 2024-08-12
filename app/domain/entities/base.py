@@ -7,9 +7,6 @@ from uuid import uuid4
 @dataclass
 class BaseEntity(ABC):
     oid: str = field(default_factory=lambda:str(uuid4()))
-    
-    def as_document(self):
-        return dict(self.__dict__)
 
     def __hash__(self) -> int:
         return hash(self.oid)
