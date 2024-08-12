@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 VT = TypeVar('VT', bound=Any)
 
 
-@dataclass
+@dataclass(frozen=True)
 class BaseValueObject(ABC, Generic[VT]):
     value: VT
 

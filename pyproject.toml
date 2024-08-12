@@ -1,14 +1,18 @@
 [tool.poetry]
-name = "ddd+kafka"
+name = "ddd-kafka-microservices"
 version = "0.1.0"
 description = ""
-authors = ["Kadimk4 <khaydarshin2007@gmail.com>"]
+authors = ["kadimk"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-fastapi = "^0.112.0"
+python = "^3.11"
 pytest = "^8.3.2"
+faker = "^26.3.0"
+fastapi = "^0.112.0"
+uvicorn = "^0.30.5"
+pymongo = {extras = ["srv"], version = "^4.8.0"}
+motor = "^3.5.1"
 
 
 [build-system]

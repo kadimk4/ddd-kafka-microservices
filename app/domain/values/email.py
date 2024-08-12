@@ -14,10 +14,10 @@ class EmailStr(BaseValueObject):
             raise EmptyEmailException()
 
         if mt(pattern, self.value) is None:
-            raise ErrorEmailException()
-        
-        if len(self.value) >= 24 or len(self.value) <= 6:
-            raise LenEmailException()
+            raise ErrorEmailException(self.value)
+
+        if len(self.value) >= 40 or len(self.value) <= 6:
+            raise LenEmailException(self.value)
 
     def as_generic_type(self) -> str:
         return str(self.value)
