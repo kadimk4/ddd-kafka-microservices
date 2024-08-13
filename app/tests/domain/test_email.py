@@ -1,8 +1,8 @@
 import pytest
 from faker import Faker
 
-from app.domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
-from app.domain.values.email import Email
+from domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
+from domain.values.email import Email
 
 faker = Faker()
 

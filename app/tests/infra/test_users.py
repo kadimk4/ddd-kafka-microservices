@@ -1,8 +1,8 @@
 import pytest
 from faker import Faker
-from app.domain.entities.user import User
-from app.infra.users.mongodb import MongoDBUserRepo
-from app.domain.values.email import Email
+from domain.entities.user import User
+from infra.users.mongodb import MongoDBUserRepo
+from domain.values.email import Email
 
 faker = Faker()
 
@@ -14,19 +14,20 @@ async def test_crud_user_success(user_repo: MongoDBUserRepo):
     user = User(username=username, email=Email(email))
     await user_repo.add(user)
 
-    found_user = await user_repo.find_one(username=username)
-    assert found_user is not None
-    assert found_user.email.as_generic_type() == email
-    assert found_user.username == username
+    user_ = await user_repo.find_one(username=username)
+    assert user_ is not None
+    assert user_['email'] == email
+    assert user_['username'] == username
 
-    new_username = faker.user_name()
-    user.username = new_username
-    await user_repo.update_one(found_user.oid, user)
-    updated_user = await user_repo.find_one(new_username)
-    assert updated_user.username != username
-    assert updated_user.username == new_username
+    username_ = faker.user_name()
+    user.username = username_
+    await user_repo.update_one(user_['oid'], user)
+    updated_user = await user_repo.find_one(username_)
+    assert updated_user['username'] != username
+    assert updated_user['username'] == username_
 
-    deleted_user = await user_repo.delete(found_user.oid)
-    assert deleted_user is None
+    deleted = await user_repo.delete(updated_user['username'])
+    
+    assert deleted is None
 
 

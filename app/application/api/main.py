@@ -1,6 +1,6 @@
 from fastapi import Depends, FastAPI
 
-from app.application.api.user.user_router import router as user_router
+from application.api.user.user_router import router as user_router
 
 
 app = FastAPI(

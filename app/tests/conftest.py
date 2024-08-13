@@ -1,7 +1,7 @@
 from pytest import fixture
 from punq import Container
-from app.tests.fixtures import init_test_container
-from app.infra.users.mongodb import MongoDBUserRepo
+from tests.fixtures import init_test_container
+from infra.users.mongodb import MongoDBUserRepo
 
 @fixture()
 def container() -> Container:

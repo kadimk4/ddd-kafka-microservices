@@ -1,8 +1,8 @@
 
 from dataclasses import dataclass
 
-from app.domain.entities.base import BaseEntity
-from app.domain.values.email import Email
+from domain.entities.base import BaseEntity
+from domain.values.email import Email
 
 
 @dataclass(eq=False, kw_only=True)

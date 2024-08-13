@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from re import match as mt
-from app.domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
-from app.domain.values.base import BaseValueObject 
+from domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
+from domain.values.base import BaseValueObject 
 
 pattern = r"^[-\w\.]+@([-\w]+\.)+[-\w]{2,4}$"
 

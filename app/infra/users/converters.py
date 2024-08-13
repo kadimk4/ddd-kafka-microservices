@@ -1,7 +1,7 @@
 from bson import ObjectId
-from app.domain.entities.base import BaseEntity
-from app.domain.entities.user import User
-from app.domain.values.email import Email
+from domain.entities.base import BaseEntity
+from domain.entities.user import User
+from domain.values.email import Email
 
 
 def from_document(document: dict) -> User:

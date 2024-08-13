@@ -1,8 +1,6 @@
 import pytest
 from punq import Container
-
-from app.logic.punq import _init_container
-from app.infra.users.mongodb import MongoDBUserRepo
+from logic.punq import _init_container
 
 
 def init_test_container():
