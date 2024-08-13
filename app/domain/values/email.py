@@ -1,9 +1,14 @@
 from dataclasses import dataclass
 from re import match as mt
-from domain.exceptions.email import EmptyEmailException, ErrorEmailException, LenEmailException
-from domain.values.base import BaseValueObject 
+from domain.exceptions.email import (
+    EmptyEmailException,
+    ErrorEmailException,
+    LenEmailException,
+)
+from domain.values.base import BaseValueObject
 
 pattern = r"^[-\w\.]+@([-\w]+\.)+[-\w]{2,4}$"
+
 
 @dataclass(frozen=True)
 class Email(BaseValueObject):

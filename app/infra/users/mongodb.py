@@ -37,11 +37,7 @@ class MongoDBUserRepo:
         if await self.user_exists(username):
             document = await self.collection.find_one({"username": username})
             user = from_document(document)
-            return {
-                "oid": user.oid,
-                "username": user.username,
-                "email": user.email.as_generic_type(),
-            }
+            return user
         raise UserNotExistException()
 
     async def update_one(self, oid: str, user: User) -> None:
