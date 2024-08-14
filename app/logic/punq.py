@@ -7,8 +7,12 @@ from infra.users.mongodb import MongoDBUserRepo
 from logic.commands.users import (
     CreateUserCommand,
     CreateUserCommandHandler,
-    GetUserCommand,
-    GetUserCommandHandler,
+    DeleteUserCommand,
+    DeleteUserCommandHandler,
+    GetUserQuery,
+    GetUserQueryHandler,
+    UpdateUserCommand,
+    UpdateUserCommandHandler,
 )
 from logic.mediator import Mediator
 from settings import Config
@@ -22,7 +26,9 @@ def init_container():
 def _init_container() -> Container:
     container = Container()
     container.register(CreateUserCommandHandler)
-    container.register(GetUserCommandHandler)
+    container.register(GetUserQueryHandler)
+    container.register(DeleteUserCommandHandler)
+    container.register(UpdateUserCommandHandler)
     container.register(Config, instance=Config(), scope=Scope.singleton)
 
     def init_mediator():
@@ -31,7 +37,13 @@ def _init_container() -> Container:
             CreateUserCommand, [container.resolve(CreateUserCommandHandler)]
         )
         mediator.register_command(
-            GetUserCommand, [container.resolve(GetUserCommandHandler)]
+            GetUserQuery, [container.resolve(GetUserQueryHandler)]
+        )
+        mediator.register_command(
+            DeleteUserCommand, [container.resolve(DeleteUserCommandHandler)]
+        )
+        mediator.register_command(
+            UpdateUserCommand, [container.resolve(UpdateUserCommandHandler)]
         )
         return mediator
 

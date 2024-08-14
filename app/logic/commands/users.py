@@ -15,8 +15,20 @@ class CreateUserCommand(BaseCommand):
 
 
 @dataclass(frozen=True)
-class GetUserCommand(BaseCommand):
+class GetUserQuery(BaseCommand):
     username: str
+
+
+@dataclass(frozen=True)
+class DeleteUserCommand(BaseCommand):
+    username: str
+
+
+@dataclass(frozen=True)
+class UpdateUserCommand(BaseCommand):
+    oid: str
+    username: str
+    email: str
 
 
 @dataclass(frozen=True)
@@ -24,9 +36,6 @@ class CreateUserCommandHandler(CommandHandler[CreateUserCommand, User]):
     user_repo: MongoDBUserRepo
 
     async def handle(self, command: CreateUserCommand) -> User:
-        if await self.user_repo.user_exists(command.username):
-            raise UserAlreadyExistsException()
-
         email = Email(command.email)
         user = User(username=command.username, email=email)
 
@@ -35,12 +44,30 @@ class CreateUserCommandHandler(CommandHandler[CreateUserCommand, User]):
 
 
 @dataclass(frozen=True)
-class GetUserCommandHandler(CommandHandler[GetUserCommand, User]):
+class GetUserQueryHandler(CommandHandler[GetUserQuery, User]):
     user_repo: MongoDBUserRepo
 
-    async def handle(self, command: GetUserCommand) -> User:
-        if not await self.user_repo.user_exists(command.username):
-            raise UserNotExistException()
-
+    async def handle(self, command: GetUserQuery) -> User:
         user = await self.user_repo.find_one(command.username)
+        return user
+
+
+@dataclass(frozen=True)
+class DeleteUserCommandHandler(CommandHandler[DeleteUserCommand, User]):
+    user_repo: MongoDBUserRepo
+
+    async def handle(self, command: DeleteUserCommand) -> dict:
+        user = await self.user_repo.delete(command.username)
+        return user
+
+
+@dataclass(frozen=True)
+class UpdateUserCommandHandler(CommandHandler[UpdateUserCommand, User]):
+    user_repo: MongoDBUserRepo
+
+    async def handle(self, command: UpdateUserCommand) -> dict:
+        email = Email(command.email)
+        user = User(username=command.username, email=email)
+
+        await self.user_repo.update_one(command.oid, user)
         return user

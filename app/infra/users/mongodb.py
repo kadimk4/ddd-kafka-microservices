@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from domain.entities.user import User
-
+from fastapi import status
 from infra.exceptions.users import UserAlreadyExistsException, UserNotExistException
 from infra.users.converters import to_document, from_document
 
@@ -33,22 +33,23 @@ class MongoDBUserRepo:
             }
         raise UserAlreadyExistsException()
 
-    async def find_one(self, username: str) -> dict | None:
+    async def find_one(self, username: str) -> User:
         if await self.user_exists(username):
             document = await self.collection.find_one({"username": username})
             user = from_document(document)
             return user
         raise UserNotExistException()
 
-    async def update_one(self, oid: str, user: User) -> None:
+    async def update_one(self, oid: str, user: User) -> dict:
         document = to_document(user)
+        document.pop("_id", None)
         if await self.collection.find_one({"_id": oid}):
             await self.collection.update_one({"_id": oid}, {"$set": document})
-        else:
-            raise UserNotExistException()
+            return {"status": status.HTTP_200_OK, "details": "updated"}
+        raise UserNotExistException()
 
-    async def delete(self, username: str) -> None:
+    async def delete(self, username: str) -> dict:
         if await self.user_exists(username):
             await self.collection.find_one_and_delete({"username": username})
-        else:
-            raise UserNotExistException()
+            return {"status": status.HTTP_200_OK, "details": "deleted"}
+        raise UserNotExistException()

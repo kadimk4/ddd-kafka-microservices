@@ -1,5 +1,3 @@
-from bson import ObjectId
-from domain.entities.base import BaseEntity
 from domain.entities.user import User
 from domain.values.email import Email
 
