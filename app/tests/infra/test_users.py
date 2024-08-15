@@ -29,4 +29,4 @@ async def test_crud_user_success(user_repo: MongoDBUserRepo):
 
     deleted = await user_repo.delete(updated_user.username)
 
-    assert issubclass(deleted.__class__, BaseEntity) == False
+    assert issubclass(deleted.__class__, BaseEntity) is False

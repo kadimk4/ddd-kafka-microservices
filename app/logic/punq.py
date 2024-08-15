@@ -25,26 +25,22 @@ def init_container():
 
 def _init_container() -> Container:
     container = Container()
-    container.register(CreateUserCommandHandler)
-    container.register(GetUserQueryHandler)
-    container.register(DeleteUserCommandHandler)
-    container.register(UpdateUserCommandHandler)
+    command_handlers = [
+        (CreateUserCommand, CreateUserCommandHandler),
+        (GetUserQuery, GetUserQueryHandler),
+        (DeleteUserCommand, DeleteUserCommandHandler),
+        (UpdateUserCommand, UpdateUserCommandHandler),
+    ]
+
+    for command, handler in command_handlers:
+        container.register(handler)
+
     container.register(Config, instance=Config(), scope=Scope.singleton)
 
     def init_mediator():
         mediator = Mediator()
-        mediator.register_command(
-            CreateUserCommand, [container.resolve(CreateUserCommandHandler)]
-        )
-        mediator.register_command(
-            GetUserQuery, [container.resolve(GetUserQueryHandler)]
-        )
-        mediator.register_command(
-            DeleteUserCommand, [container.resolve(DeleteUserCommandHandler)]
-        )
-        mediator.register_command(
-            UpdateUserCommand, [container.resolve(UpdateUserCommandHandler)]
-        )
+        for command, handler in command_handlers:
+            mediator.register_command(command, [container.resolve(handler)])
         return mediator
 
     def init_mongodb_user_repo():
